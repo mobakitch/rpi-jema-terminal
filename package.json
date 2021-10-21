@@ -1,0 +1,36 @@
+{
+  "name": "rpi-jema-terminal",
+  "version": "0.0.1",
+  "description": "JEM-A Terminal module for Raspberry pi",
+  "main": "dist/rpi-jema-terminal.js",
+  "types": "dist/rpi-jema-terminal.d.ts",
+  "scripts": {
+    "clean": "rimraf ./dist",
+    "build": "rimraf ./dist && tsc -d",
+    "prepublishOnly": "npm run build",
+    "postpublish": "npm run clean",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Norio KAWABATA",
+  "license": "ISC",
+  "files": [
+    "LICENSE",
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/KAWABATANorio/rpi-jema-terminal.git"
+  },
+  "bugs": {
+    "url": "http://github.com/KAWABATANorio/rpi-jema-terminal/issues"
+  },
+  "devDependencies": {
+    "@types/node": "10.17.19",
+    "typescript": "^3.8.3",
+    "rimraf": "^3.0.2"
+  },
+  "dependencies": {
+    "@types/rpi-gpio": "^2.1.1",
+    "rpi-gpio": "^2.1.7"
+  }
+}
