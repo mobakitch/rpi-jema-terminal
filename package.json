@@ -1,6 +1,6 @@
 {
   "name": "rpi-jema-terminal",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "JEM-A Terminal module for Raspberry pi",
   "main": "dist/rpi-jema-terminal.js",
   "types": "dist/rpi-jema-terminal.d.ts",
@@ -25,12 +25,12 @@
     "url": "http://github.com/KAWABATANorio/rpi-jema-terminal/issues"
   },
   "devDependencies": {
-    "@types/node": "10.17.19",
-    "typescript": "^3.8.3",
-    "rimraf": "^3.0.2"
+    "@types/node": "^20.9.1",
+    "rimraf": "^5.0.5",
+    "typescript": "^5.2.2"
   },
   "dependencies": {
-    "@types/rpi-gpio": "^2.1.1",
+    "@types/rpi-gpio": "^2.1.4",
     "rpi-gpio": "^2.1.7"
   }
 }
