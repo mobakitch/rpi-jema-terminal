@@ -1,6 +1,6 @@
 {
   "name": "rpi-jema-terminal",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "JEM-A Terminal module for Raspberry pi",
   "main": "dist/rpi-jema-terminal.js",
   "types": "dist/rpi-jema-terminal.d.ts",

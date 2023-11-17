@@ -1,15 +1,27 @@
-import { EventEmitter } from "events";
-import gpio from "rpi-gpio";
-const gpiop = gpio.promise;
+import { EventEmitter } from 'node:events';
+import { setTimeout } from 'node:timers/promises'
+import gpio, { promise as gpiop } from 'rpi-gpio';
+
+namespace JEMATerminal {
+  export type Pin = {
+    pin: number;
+    duration?: number | undefined;
+    inverted?: boolean | undefined;
+  };
+  export type Options = {
+    monitor: Pin;
+    control: Pin;
+  };
+}
 
 export default class JEMATerminal extends EventEmitter {
 
-  private readonly options: any;
   private currentValue: boolean = false;
 
-  constructor(options: any) {
+  constructor(
+    private readonly options: JEMATerminal.Options
+  ) {
     super();
-    this.options = options;
   }
 
   public async setup(): Promise<void> {
@@ -17,7 +29,7 @@ export default class JEMATerminal extends EventEmitter {
     await gpiop.setup(this.options.monitor.pin, gpio.DIR_IN, gpio.EDGE_BOTH);
     await gpiop.setup(this.options.control.pin, gpio.DIR_OUT, gpio.EDGE_NONE);
 
-    gpio.on('change', this.onChange);
+    gpio.on('change', (channel: any, value: any) => this.onChange(channel, value));
 
     this.currentValue = this.normalizeMonitorValue(await gpiop.read(this.options.monitor.pin));
   }
@@ -41,7 +53,7 @@ export default class JEMATerminal extends EventEmitter {
     const currentValue = this.normalizeMonitorValue(await gpiop.read(this.options.monitor.pin));
     if (currentValue != value) {
       await gpiop.write(this.options.control.pin, true);
-      await this.sleep(this.options.control.duration);
+      await setTimeout(this.options.control.duration ?? 0);
       await gpiop.write(this.options.control.pin, false);
       this.currentValue = value;
     }
@@ -50,10 +62,6 @@ export default class JEMATerminal extends EventEmitter {
 
   private normalizeMonitorValue(value: boolean): boolean {
     return this.options.monitor.inverted ? !value : !!value;
-  }
-
-  private sleep(timeout: number): Promise<void> {
-    return new Promise(resolve => setTimeout(resolve, timeout));
   }
 
 }
