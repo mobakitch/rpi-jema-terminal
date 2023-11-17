@@ -29,12 +29,13 @@ export default class JEMATerminal extends EventEmitter {
     await gpiop.setup(this.options.monitor.pin, gpio.DIR_IN, gpio.EDGE_BOTH);
     await gpiop.setup(this.options.control.pin, gpio.DIR_OUT, gpio.EDGE_NONE);
 
-    gpio.on('change', (channel: any, value: any) => this.onChange(channel, value));
+    const self = this;
+    gpio.on('change', (channel: any, value: any) => self.onChange(channel, value));
 
     this.currentValue = this.normalizeMonitorValue(await gpiop.read(this.options.monitor.pin));
   }
 
-  private onChange(channel: any, value: any): void {
+  private onChange(this: JEMATerminal, channel: any, value: any): void {
     if (channel == this.options.monitor.pin) {
       this.currentValue = this.normalizeMonitorValue(value);
       this.emit('change', this.currentValue);
